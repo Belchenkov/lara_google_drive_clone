@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Repositories\FileRepository;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,6 +16,11 @@ use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
+    public function __construct(
+        private readonly FileRepository $r_file
+    )
+    {}
+
     /**
      * Display the registration view.
      */
@@ -46,6 +52,11 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        $this->r_file->saveAfterRegister([
+            'name' => $user->email,
+            'is_folder' => 1,
+        ]);
+
+        return redirect(route('myFiles', absolute: false));
     }
 }
