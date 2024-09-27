@@ -23,4 +23,9 @@ class File extends Model
         'mime',
         'size',
     ];
+
+    public function isOwnedBy(int $user_id): bool
+    {
+        return $this->created_by === $user_id;
+    }
 }

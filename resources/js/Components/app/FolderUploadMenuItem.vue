@@ -1,5 +1,5 @@
 <template>
-    FolderUploadMenuItem
+    Upload Folder
 </template>
 
 <script setup lang="ts">
