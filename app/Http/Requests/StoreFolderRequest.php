@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\File;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class StoreFolderRequest extends ParentIdBaseRequest
@@ -14,13 +15,13 @@ class StoreFolderRequest extends ParentIdBaseRequest
             [
                 'name' => [
                     'required',
-                    'string',
                     Rule::unique(File::class, 'name')
-                        ->where('created_at', auth()->id())
+                        ->where('created_by', Auth::id())
                         ->where('parent_id', $this->parent_id)
                         ->whereNull('deleted_at')
-                ],
-            ]);
+                ]
+            ]
+        );
     }
 
     public function messages(): array

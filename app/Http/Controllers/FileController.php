@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFolderRequest;
 use App\Repositories\FileRepository;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 
 class FileController extends Controller
@@ -13,7 +16,7 @@ class FileController extends Controller
     )
     {}
 
-    public function myFiles()
+    public function myFiles(): \Inertia\Response
     {
         return Inertia::render('MyFiles');
     }
@@ -21,12 +24,13 @@ class FileController extends Controller
     public function createFolder(StoreFolderRequest $request)
     {
         $data = $request->validated();
+        $parent = $request->parent;
 
-        if (!$data['parent']) {
-            $data['parent'] = $this->r_file->getRoot(auth()->id());
+        if (!$parent) {
+            $parent = $this->r_file->getRoot(Auth::id());
         }
 
-        $data['parent']->appendNode($this->r_file->saveByCreateNewFolder([
+        $parent?->appendNode($this->r_file->saveByCreateNewFolder([
             'name' => $data['name'],
             'is_folder' => 1,
         ]));

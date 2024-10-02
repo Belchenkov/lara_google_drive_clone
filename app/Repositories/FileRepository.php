@@ -24,10 +24,11 @@ class FileRepository
         ]);
     }
 
-    public function getRoot(int $user_id): ?File
+    public function getRoot(int $user_id)
     {
         return File::query()
             ->whereIsRoot()
-            ->where('created_by', $user_id)->firstOrFail();
+            ->where('created_by', $user_id)
+            ->first();
     }
 }
