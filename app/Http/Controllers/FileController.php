@@ -33,6 +33,7 @@ class FileController extends Controller
         $parent?->appendNode($this->r_file->saveByCreateNewFolder([
             'name' => $data['name'],
             'is_folder' => 1,
+            'parent' => $parent,
         ]));
     }
 }

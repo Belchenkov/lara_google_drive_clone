@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\File;
+use Illuminate\Support\Str;
 
 class FileRepository
 {
@@ -21,6 +22,7 @@ class FileRepository
         return File::create([
             'name' => $data['name'],
             'is_folder' => $data['is_folder'],
+            'path' => ($data['parent']->parent ? $data['parent']->parent->path . '/' : '') . Str::slug($data['name']),
         ]);
     }
 
