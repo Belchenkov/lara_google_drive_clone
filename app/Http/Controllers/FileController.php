@@ -18,7 +18,9 @@ class FileController extends Controller
 
     public function myFiles(): \Inertia\Response
     {
-        return Inertia::render('MyFiles');
+        $files = $this->r_file->getFilesPaginate(auth()->id());
+
+        return Inertia::render('MyFiles', compact('files'));
     }
 
     public function createFolder(StoreFolderRequest $request)
@@ -27,7 +29,7 @@ class FileController extends Controller
         $parent = $request->parent;
 
         if (!$parent) {
-            $parent = $this->r_file->getRoot(Auth::id());
+            $parent = $this->r_file->getRoot(auth()->id());
         }
 
         $parent?->appendNode($this->r_file->saveByCreateNewFolder([

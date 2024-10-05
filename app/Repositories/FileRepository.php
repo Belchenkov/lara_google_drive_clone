@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\File;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class FileRepository
@@ -32,5 +33,15 @@ class FileRepository
             ->whereIsRoot()
             ->where('created_by', $user_id)
             ->first();
+    }
+
+    public function getFilesPaginate(int $user_id, int $perPage = 10): LengthAwarePaginator
+    {
+        return File::query()
+            ->where('created_by', $user_id)
+            ->where('parent_id', $this->getRoot($user_id))
+            ->orderBy('is_folder', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
     }
 }
