@@ -35,11 +35,11 @@ class FileRepository
             ->first();
     }
 
-    public function getFilesPaginate(int $user_id, int $perPage = 10): LengthAwarePaginator
+    public function getFilesPaginate(int $user_id, int $perPage = 10)
     {
         return File::query()
             ->where('created_by', $user_id)
-            ->where('parent_id', $this->getRoot($user_id))
+            ->where('parent_id', $this->getRoot($user_id)->id)
             ->orderBy('is_folder', 'desc')
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
