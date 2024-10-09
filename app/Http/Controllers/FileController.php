@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
@@ -17,7 +18,7 @@ class FileController extends Controller
     )
     {}
 
-    public function myFiles(): \Inertia\Response
+    public function myFiles(Request $request, string $folder = null): \Inertia\Response
     {
         $files = FileResource::collection($this->r_file->getFilesPaginate(auth()->id()));
 
