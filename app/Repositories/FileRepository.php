@@ -35,7 +35,7 @@ class FileRepository
             ->first();
     }
 
-    public function getFilesPaginate(int $user_id, int $perPage = 10)
+    public function getFilesPaginate(int $user_id, int $perPage = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return File::query()
             ->where('created_by', $user_id)
@@ -43,5 +43,17 @@ class FileRepository
             ->orderBy('is_folder', 'desc')
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
+    }
+
+    public function firstByUserAndPath(int $user_id, string $folder): ?File
+    {
+        if ($folder) {
+            return File::query()
+                ->where('created_by', $user_id)
+                ->where('path', $folder)
+                ->first();
+        }
+
+        return $this->getRoot($user_id);
     }
 }
