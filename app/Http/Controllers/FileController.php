@@ -18,13 +18,13 @@ class FileController extends Controller
     )
     {}
 
-    public function myFiles(Request $request, string $folder = null): \Inertia\Response
+    public function myFiles(string $folder = null): \Inertia\Response
     {
         $folder = $this->r_file->firstByUserAndPath(auth()->id(), $folder);
 
         $files = FileResource::collection($this->r_file->getFilesPaginate(auth()->id()));
 
-        return Inertia::render('MyFiles', compact('files'));
+        return Inertia::render('MyFiles', compact('files', 'folder'));
     }
 
     public function createFolder(StoreFolderRequest $request)

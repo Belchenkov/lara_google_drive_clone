@@ -9,9 +9,9 @@
                 <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                     Path
                 </th>
-<!--                <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left">-->
-<!--                    Owner-->
-<!--                </th>-->
+                <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                    Owner
+                </th>
                 <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                     Last Modified
                 </th>
@@ -24,13 +24,17 @@
                 <tr
                     v-for="file of allFiles.data"
                     :key="file.id"
-                    @dblclick="openFolder(file)"
+                    @dblclick.prevent="openFolder(file)"
+                    class="border-b transition duration-300 ease-in-out hover:bg-blue-100 cursor-pointer"
                 >
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 flex items-center">
                         {{ file.name }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {{ file.path }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {{ file.owner }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {{ file.updated_at }}
@@ -63,6 +67,7 @@ const allFiles = ref({
 });
 
 function openFolder(file) {
+    console.log(file.is_folder, 'file');
     if (!file.is_folder) {
         return;
     }

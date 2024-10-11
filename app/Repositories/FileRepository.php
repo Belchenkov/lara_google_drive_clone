@@ -45,7 +45,7 @@ class FileRepository
             ->paginate($perPage);
     }
 
-    public function firstByUserAndPath(int $user_id, string $folder): ?File
+    public function firstByUserAndPath(int $user_id, ?string $folder): ?File
     {
         if ($folder) {
             return File::query()
