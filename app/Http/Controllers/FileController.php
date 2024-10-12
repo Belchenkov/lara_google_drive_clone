@@ -20,11 +20,16 @@ class FileController extends Controller
 
     public function myFiles(string $folder = null): \Inertia\Response
     {
-        $folder = $this->r_file->firstByUserAndPath(auth()->id(), $folder);
+        $folder = new FileResource($this->r_file->firstByUserAndPath(auth()->id(), $folder));
 
         $files = FileResource::collection($this->r_file->getFilesPaginate(auth()->id()));
 
-        return Inertia::render('MyFiles', compact('files', 'folder'));
+        $ancestors = FileResource::collection([
+            ...$folder->ancestors,
+            $folder
+        ]);
+
+        return Inertia::render('MyFiles', compact('files', 'folder', 'ancestors'));
     }
 
     public function createFolder(StoreFolderRequest $request)
